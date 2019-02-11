@@ -1,2 +1,2 @@
 # Eatster
-An Eating hub for youngstes
+An Eating hub for youngsters

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Eatster.Persistence.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20190210191254_initial")]
+    [Migration("20190211195403_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,6 +1,9 @@
-﻿using Eatster.Api.Infrastructure;
+using Eatster.Api.Infrastructure;
+using Eatster.Application.Auth.Register.Command;
+using Eatster.Application.delete;
 using Eatster.Application.Login.Command;
 using Eatster.Application.Login.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
@@ -12,10 +15,25 @@ namespace Eatster.Api.Controllers
     public class AccountController : BaseController
     {
         [HttpPost("[action]")]
-        [ProducesResponseType(typeof(LoginResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Login(LoginCommand command)
         {
-            return Ok(await Mediator.Send(command));
+            var response = await Mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Register(RegisterCommand command)
+        {
+            var response = await Mediator.Send(command);
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> Protected()
+        {
+            await Mediator.Send(new DeleteQuery());
+            return NoContent();
         }
     }
 }

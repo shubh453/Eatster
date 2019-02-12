@@ -18,11 +18,11 @@ namespace Eatster.Domain.Entities
 
         public IReadOnlyCollection<RefreshToken> RefreshTokens => refreshTokens.AsReadOnly();
 
-        internal User()
+        public User()
         {
         }
 
-        internal User(string firstName, string lastName, string userName, string identityId)
+        public User(string firstName, string lastName, string userName, string identityId)
         {
             FirstName = firstName;
             LastName = lastName;

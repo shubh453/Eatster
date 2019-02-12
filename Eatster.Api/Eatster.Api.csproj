@@ -13,7 +13,8 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
+    <PackageReference Include="NSwag.AspNetCore" Version="12.0.13" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,4 +22,9 @@
     <ProjectReference Include="..\Eatster.Infrastructure\Eatster.Infrastructure.csproj" />
   </ItemGroup>
 
+  <!--<Target Name="NSwag" AfterTargets="Build">
+    <Copy SourceFiles="@(ReferencePath)" DestinationFolder="$(OutDir)References" />
+    <Exec Command="$(NSwagExe_Core20) run nswag.json /variables:Configuration=$(Configuration)" />
+    <RemoveDir Directories="$(OutDir)References" />
+  </Target>-->
 </Project>

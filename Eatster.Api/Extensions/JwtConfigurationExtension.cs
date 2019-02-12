@@ -70,10 +70,12 @@ namespace Eatster.Api.Extensions
                 };
             });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
-            });
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
+            //});
+
+            services.AddAuthorization();
 
             var identityBuilder = services.AddIdentityCore<AppUser>(o =>
             {

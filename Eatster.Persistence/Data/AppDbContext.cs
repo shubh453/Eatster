@@ -4,6 +4,7 @@ using Eatster.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Eatster.Persistence.Data
@@ -30,10 +31,10 @@ namespace Eatster.Persistence.Data
             return base.SaveChanges();
         }
 
-        public async Task<int> SaveChangesAsync()
+        public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             AddAuitInfo();
-            return await base.SaveChangesAsync();
+            return await base.SaveChangesAsync(cancellationToken);
         }
 
         private void AddAuitInfo()

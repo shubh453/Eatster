@@ -7,7 +7,7 @@ namespace Eatster.Application.Exceptions
 {
     public class ValidationException : Exception
     {
-        private IDictionary<string, string[]> Failures { get; set; }
+        public IDictionary<string, string[]> Failures { get; set; }
 
         public ValidationException()
             : base("One or more validation failures have occurred.")

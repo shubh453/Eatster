@@ -2,10 +2,8 @@ using Eatster.Api.Infrastructure;
 using Eatster.Application.Auth.Register.Command;
 using Eatster.Application.delete;
 using Eatster.Application.Login.Command;
-using Eatster.Application.Login.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Eatster.Api.Controllers
@@ -28,7 +26,7 @@ namespace Eatster.Api.Controllers
             return Ok(response);
         }
 
-        [Authorize]
+        [Authorize("ApiUser")]
         [HttpGet("[action]")]
         public async Task<IActionResult> Protected()
         {

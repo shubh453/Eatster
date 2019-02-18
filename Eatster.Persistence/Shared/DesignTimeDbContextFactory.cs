@@ -24,7 +24,7 @@ namespace Eatster.Persistence.Shared
             //        "Could not find a connection string named 'Default'.");
             //}
 
-            return Create(@"Server=DESKTOP-P48ICQT\SQLEXPRESS;Database=EatsterDb;Trusted_Connection=True;MultipleActiveResultSets=true");
+            return Create(@"Server=DESKTOP-659LH9K\SSR;Database=EatsterDb;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
 
         private TContext Create(string connectionString)

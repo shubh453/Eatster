@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Eatster.Api.Extensions;
+using Eatster.Api.Filters;
 using Eatster.Api.Infrastructure;
 using Eatster.Application.Auth.Login.Command;
 using Eatster.Application.Infrastructure;
@@ -17,8 +18,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NSwag;
-using NSwag.SwaggerGeneration.Processors.Security;
 using System;
 using System.Reflection;
 
@@ -41,7 +40,7 @@ namespace Eatster.Api
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidation<,>));
             services.AddMediatR(typeof(LoginCommandHandler).GetTypeInfo().Assembly);
 
-            services.AddMvc()
+            services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginCommandValidator>());
 
@@ -57,34 +56,14 @@ namespace Eatster.Api
                 options.SuppressModelStateInvalidFilter = true;
             });
 
+            services.AddCors(corsOptions =>
+            {
+                corsOptions.AddPolicy("fully permissive", configurePolicy => configurePolicy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            });
+
             services.AddJwtConfiguration(Configuration);
 
-            services.AddSwaggerDocument(config =>
-            {
-                config.PostProcess = document =>
-                {
-                    document.Info.Version = "v1";
-                    document.Info.Title = "Eatster API";
-                    document.Info.Description = "Api for Eatster, An Eating hub for youngsters.";
-                    document.Info.TermsOfService = "None";
-                    document.Info.Contact = new NSwag.SwaggerContact
-                    {
-                        Name = "Shubham Shukla",
-                        Email = string.Empty,
-                        Url = "https://twitter.com/LighghtCoder"
-                    };
-                };
-                config.DocumentProcessors.Add(new SecurityDefinitionAppender("JWT Token",
-                    new SwaggerSecurityScheme
-                    {
-                        Type = SwaggerSecuritySchemeType.ApiKey,
-                        Name = "Authorization",
-                        Description = "Copy 'Bearer ' + valid JWT token into field",
-                        In = SwaggerSecurityApiKeyLocation.Header
-                    }));
-
-                config.OperationProcessors.Add(new OperationSecurityScopeProcessor("JWT Token"));
-            });
+            services.AddSwaggerConfig();
 
             services.AddAutoMapper();
 
@@ -93,7 +72,7 @@ namespace Eatster.Api
             builder.RegisterModule(new AutofacModule());
             builder.Populate(services);
             var container = builder.Build();
-            // Create the IServiceProvider based on the container.
+
             return new AutofacServiceProvider(container);
         }
 
@@ -110,6 +89,8 @@ namespace Eatster.Api
             app.UseSwagger();
             app.UseSwaggerUi3();
             app.UseHttpsRedirection();
+            app.UseCors("fully permissive");
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
